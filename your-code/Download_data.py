@@ -1,4 +1,6 @@
 import os as os
+import requests 
+import json
 
 def download_data_sets():
     '''Downloads a dataset from kaggle and only keeps the csv in your data file. Beware of your own data structure:
@@ -22,3 +24,24 @@ def download_data_sets():
     
     move_and_delete = f"mv *.csv database/; say -v Monica 'moviendo el dataset'"
     return os.system(move_and_delete)
+
+
+def access_yahoo(url_yahoo, parameters): 
+    '''
+    Accesses the yahoo finance api with given parameters, uses our key.
+
+    where:
+    url_yahoo: the yahoo_api url you will use to connect. 
+    for this function to work you need to be using rapid apis low latency yahoo api.
+
+    parameters = a dictionary with the following keys:
+    {'symbols': 'TICKERS ex: AAPL, GME, MSFT', 'range':'5y', 'interval':'1d'}
+    
+    '''
+    headers = {
+    'x-rapidapi-key': "5978a55496msh35be22b262fe8acp19f68cjsn3abe53806b27",
+    'x-rapidapi-host': "yahoo-finance-low-latency.p.rapidapi.com"
+    }
+    response = requests.request("GET", url_yahoo, headers=headers, params=parameters)
+
+    return response.json()
